@@ -81,12 +81,17 @@ func walkFunc(root *ast.FuncDecl) {
 		FuncName: root.Name.Name,
 		CC:       1,
 	}
-	fmt.Println(report)
+
+	var isRoot = true
 
 	ast.Inspect(root, func(n ast.Node) bool {
 		switch n.(type) {
 		case *ast.FuncDecl:
-			return false
+			if isRoot {
+				isRoot = false
+			} else {
+				return false
+			}
 		case *ast.IfStmt:
 			report.CC++
 			if n.(*ast.IfStmt).Else != nil {
