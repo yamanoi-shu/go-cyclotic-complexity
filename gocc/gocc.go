@@ -1,12 +1,12 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"go/ast"
 	"go/parser"
 	"go/token"
 	"log"
-	"os"
 )
 
 /*
@@ -35,14 +35,14 @@ var fset *token.FileSet
 var reports []Report
 
 func main() {
-	if len(os.Args) != 2 {
-		log.Fatal("Usage: [file path]")
-	}
 
-	filePath := os.Args[1]
+	var filePath = flag.String("path", "", "File path")
+	flag.Parse()
+	fmt.Println(*filePath)
 
 	fset = token.NewFileSet()
-	f, err := parser.ParseFile(fset, filePath, nil, 0)
+
+	f, err := parser.ParseFile(fset, *filePath, nil, 0)
 	if err != nil {
 		log.Fatal("Failed to parse file")
 	}
